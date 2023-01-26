@@ -1,6 +1,6 @@
-# xrsf-attack
+# Cross Site Request Forgery (XSRF) attack demo
 
-Cross Site Request Forgery (XRSF) attack demo.
+Cross Site Request Forgery (XSRF) attack demo.
 
 Start the real server:
 
