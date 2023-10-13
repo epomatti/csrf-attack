@@ -51,7 +51,11 @@ curl --cookie "SESSION_COOKIE=<AUTH>" localhost:3000/withdraw=10000
 
 ## Analysis
 
-### Secure Cookie
+### Secure Cookie - weak confidentiality
+
+A `secure` cookie will be sent over to (potentially) insecure locations, such as a subdomain or different port.
+
+In our simulation, a `secure` cookie from `localhost:3000` was sent to `localhost:3666` over HTTP without TLS.
 
 There are some limitations from the State Management [RFC 6265][2], for example, [weak confidentiality][1]:
 
