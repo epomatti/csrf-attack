@@ -2,23 +2,22 @@
 
 Cross-Site Request Forgery (CSRF) attack demo.
 
-Start the real server:
+Start the `./realserver` module:
 
 ```sh
-cd server
-npm install
-node app.js
+go get
+go run .
 ```
 
-Open a separate terminal session and start the malicious server:
+Open a separate terminal session and start the malicious `./evilserver` server:
 
 ```sh
-cd evilserver
 go run .
 ```
 
 ```sh
-curl --cookie "SESSION_COOKIE=TestCookie123" localhost:3666/cookies
+curl --cookie "SESSION_COOKIE=TestCookie123" \
+    localhost:3666/cookies
 ```
 
 Login to the real server: 

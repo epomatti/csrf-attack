@@ -5,7 +5,9 @@
     "dictionaries": [],
     "words": [
         "evilserver",
-        "realserver"
+        "github",
+        "realserver",
+        "uuid"
     ],
     "ignoreWords": [],
     "import": []
