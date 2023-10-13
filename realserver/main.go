@@ -4,11 +4,33 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"realserver/envs"
 
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 )
 
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Panic(err)
+	}
+	COOKIE_PATH = envs.GetString("COOKIE_PATH")
+	COOKIE_HTTP_ONLY, err = envs.GetBool("COOKIE_HTTP_ONLY")
+	if err != nil {
+		log.Panic(err)
+	}
+	COOKIE_SECURE, err = envs.GetBool("COOKIE_SECURE")
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
 const SESSION_COOKIE = "SESSION_COOKIE"
+
+var COOKIE_PATH string
+var COOKIE_HTTP_ONLY bool
+var COOKIE_SECURE bool
 
 var tokens = make(map[string]http.Cookie)
 
@@ -29,10 +51,10 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	cookie := http.Cookie{
 		Name:     SESSION_COOKIE,
 		Value:    accessToken,
-		Path:     "/",
+		Path:     COOKIE_PATH,
 		MaxAge:   3600,
-		HttpOnly: true,
-		Secure:   true,
+		HttpOnly: COOKIE_HTTP_ONLY,
+		Secure:   COOKIE_SECURE,
 		SameSite: http.SameSiteLaxMode,
 	}
 
