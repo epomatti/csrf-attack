@@ -31,6 +31,8 @@ go run .
 
 ## Simulation
 
+### Login CSRF
+
 A user would login to the real server and get an authentication token as a cookie named `SESSION_TOKEN`:
 
 ```
