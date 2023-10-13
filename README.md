@@ -48,3 +48,25 @@ After capturing the cookie, the attacker could then use the session identificati
 ```
 curl --cookie "SESSION_COOKIE=<AUTH>" localhost:3000/withdraw=10000
 ```
+
+## Analysis
+
+### Secure Cookie
+
+There are some limitations from the State Management [RFC 6265][2], for example, [weak confidentiality][1]:
+
+    Cookies do not provide integrity guarantees for sibling domains (and
+    their subdomains).  For example, consider foo.example.com and
+    bar.example.com.  The foo.example.com server can set a cookie with a
+    Domain attribute of "example.com" (possibly overwriting an existing
+    "example.com" cookie set by bar.example.com), and the user agent will
+    include that cookie in HTTP requests to bar.example.com.  In the
+    worst case, bar.example.com will be unable to distinguish this cookie
+    from a cookie it set itself.  The foo.example.com server might be
+    able to leverage this ability to mount an attack against
+    bar.example.com.
+
+
+
+[1]: https://www.rfc-editor.org/rfc/rfc6265#section-8.6
+[2]: https://www.rfc-editor.org/rfc/rfc6265
