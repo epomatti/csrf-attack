@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+const SESSION_COOKIE = "SESSION_COOKIE"
+
 func main() {
 	http.HandleFunc("/", handleOk)
 	http.HandleFunc("/cookies", handleCookies)
@@ -17,7 +19,7 @@ func main() {
 }
 
 func handleCookies(w http.ResponseWriter, r *http.Request) {
-	c, err := r.Cookie("SESSION_COOKIE")
+	c, err := r.Cookie(SESSION_COOKIE)
 	if err != nil {
 		log.Print(err)
 		w.WriteHeader(http.StatusInternalServerError)
