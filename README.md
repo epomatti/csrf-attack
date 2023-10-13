@@ -15,7 +15,7 @@ Open a separate terminal session and start the malicious server:
 ```sh
 cd evilserver
 npm install
-node evil.js
+node evil-server.js
 ```
 
 Login to the real server: 
