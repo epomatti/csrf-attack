@@ -18,6 +18,10 @@ npm install
 node evil-server.js
 ```
 
+```sh
+curl --cookie "SESSION_COOKIE=TestCookie123" localhost:3666/cookies
+```
+
 Login to the real server: 
 
 ```
