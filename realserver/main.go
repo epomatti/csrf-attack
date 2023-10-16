@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"realserver/envs"
+	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
@@ -24,6 +27,10 @@ func init() {
 	if err != nil {
 		log.Panic(err)
 	}
+	CSRF_PROTECTION_ENABLED, err = envs.GetBool("CSRF_PROTECTION_ENABLED")
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 const SESSION_COOKIE = "SESSION_COOKIE"
@@ -31,8 +38,10 @@ const SESSION_COOKIE = "SESSION_COOKIE"
 var COOKIE_PATH string
 var COOKIE_HTTP_ONLY bool
 var COOKIE_SECURE bool
+var CSRF_PROTECTION_ENABLED bool
 
-var tokens = make(map[string]http.Cookie)
+var authTokens = make(map[string]http.Cookie)
+var CSRFTokens = make(map[string]string)
 
 func main() {
 	http.HandleFunc("/", handleOk)
@@ -43,6 +52,11 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
+}
+
+type LoginResponse struct {
+	CSRFToken   string `json:"CSRFToken"`
+	AccessToken string `json:"accessToken"`
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
@@ -58,11 +72,19 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteLaxMode,
 	}
 
-	tokens[accessToken] = cookie
+	authTokens[accessToken] = cookie
 	http.SetCookie(w, &cookie)
 
-	response := fmt.Sprintf("Authenticated with session token: %s\n", accessToken)
-	fmt.Fprint(w, response)
+	var responseJson LoginResponse
+
+	if CSRF_PROTECTION_ENABLED == true {
+		responseJson.CSRFToken = strconv.Itoa(rand.Int())
+	}
+
+	responseJson.AccessToken = accessToken
+	response, _ := json.Marshal(responseJson)
+
+	fmt.Fprint(w, string(response))
 }
 
 func handleWithdraw(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +95,7 @@ func handleWithdraw(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token := tokens[c.Value]
+	token := authTokens[c.Value]
 	if &token == nil {
 		log.Print(err)
 		w.WriteHeader(http.StatusUnauthorized)

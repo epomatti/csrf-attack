@@ -51,6 +51,11 @@ After capturing the cookie, the attacker could then use the session identificati
 curl --cookie "SESSION_COOKIE=<AUTH>" localhost:3000/withdraw=10000
 ```
 
+## Solution/Mitigation
+
+- CSRF Tokens - Requires persistence on server side
+- Double cookie
+
 ## Analysis
 
 ### Secure Cookie - weak confidentiality
