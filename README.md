@@ -2,6 +2,10 @@
 
 Cross-Site Request Forgery (CSRF) attack demo.
 
+Definition from the OWASP Cheat Sheet:
+
+> A [Cross-Site Request Forgery (CSRF)][3] attack occurs when a malicious web site, email, blog, instant message, or program tricks an authenticated user's web browser into performing an unwanted action on a trusted site. If a target user is authenticated to the site, unprotected target sites cannot distinguish between legitimate authorized requests and forged authenticated requests.
+
 ## Setup
 
 ### 👍 Real server
@@ -81,3 +85,4 @@ There are some limitations from the State Management [RFC 6265][2], for example,
 
 [1]: https://www.rfc-editor.org/rfc/rfc6265#section-8.6
 [2]: https://www.rfc-editor.org/rfc/rfc6265
+[3]: https://owasp.org/www-community/attacks/csrf
